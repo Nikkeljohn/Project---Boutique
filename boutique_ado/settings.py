@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'DEVELOPMENT' in os.environ
 
-ALLOWED_HOSTS = [ 'boutique-ad-19a74f13b4ca.herokuapp.com','8000-nikkeljohn-projectbouti-vvh1ezo0fkx.ws-eu102.gitpod.io']
+ALLOWED_HOSTS = [ 'boutique-ad-19a74f13b4ca.herokuapp.com','localhost']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 
     # Other
     'crispy_forms',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -117,18 +118,22 @@ LOGIN_REDIRECT_URL = '/'
 WSGI_APPLICATION = 'boutique_ado.wsgi.application'
 
 
-DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.sqlite3',
-         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-     }
- }
      
 #DATABASES = {
 #     'default': dj_database_url.parse('postgres://yjvbwhbt:cuAPfIJNZQI8aXd7GL1-uGaMAYuUq6sG@trumpet.db.elephantsql.com/yjvbwhbt')
 #}
     
-    
+if 'DATABASE_URL' in os.environ:
+        DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }  
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -174,6 +179,28 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 FREE_DELIVERY_THRESHOLD = 50
 STANDARD_DELIVERY_PERCENTAGE = 10
+
+if 'USE_AWS' in os.environ:
+
+# Bucket Config
+
+    AWS_STORAGE_BUCKET_NAME = 'ckz8780-boutique-ado'
+    AWS_S3_REGION_NAME = 'us-east-1'
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+# Static and media files
+
+    STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+    STATICFILES_LOCATION = 'static'
+    DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+    MEDIAFILES_LOCATION = 'media'
+
+  # Override static and media URLs in production
+
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
 
 # Stripe
 
