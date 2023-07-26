@@ -26,7 +26,7 @@ SECRET_KEY = "iyxv8o8kyw%)5%l6^(aww^z1mcrcrx6#u%6(+9(*2bhoz4+v27"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ 'boutique-ad-1fd031c6565a.herokuapp.com/','8000-nikkeljohn-projectbouti-vvh1ezo0fkx.ws-eu102.gitpod.io']
+ALLOWED_HOSTS = [ 'boutique-ad-19a74f13b4ca.herokuapp.com','8000-nikkeljohn-projectbouti-vvh1ezo0fkx.ws-eu102.gitpod.io']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -117,21 +117,17 @@ LOGIN_REDIRECT_URL = '/'
 WSGI_APPLICATION = 'boutique_ado.wsgi.application'
 
 
-if 'DATABASE_URL' in os.environ:
-    DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }  
-    
+DATABASES = {
+     'default': {
+         'ENGINE': 'django.db.backends.sqlite3',
+         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+     }
+ }
+     
 #DATABASES = {
-#   'default': dj_database_url.parse('postgres://yjvbwhbt:cuAPfIJNZQI8aXd7GL1-uGaMAYuUq6sG@trumpet.db.elephantsql.com/yjvbwhbt')
+#     'default': dj_database_url.parse('postgres://yjvbwhbt:cuAPfIJNZQI8aXd7GL1-uGaMAYuUq6sG@trumpet.db.elephantsql.com/yjvbwhbt')
 #}
+    
     
 
 # Password validation
